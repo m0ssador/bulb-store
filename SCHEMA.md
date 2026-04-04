@@ -14,7 +14,7 @@
 
 ```mermaid
 erDiagram
-    USER ||--o{ ORDER : "оформляет"
+    USER ||--o{ ORDER : "меняет статус"
 
     BULB_CATEGORY ||--o{ PRODUCT : "классифицирует"
 
@@ -54,7 +54,7 @@ erDiagram
 
     ORDER {
         uuid id PK
-        uuid user_id FK
+        uuid session_id "ID пользовательской сессии из браузера"
         enum status
         enum delivery_type "DELIVERY, PICKUP"
         string delivery_address "если доставка"
