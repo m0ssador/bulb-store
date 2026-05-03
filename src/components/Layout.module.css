@@ -1,0 +1,86 @@
+.app {
+  min-height: 100vh;
+}
+
+.topbar {
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 18px clamp(16px, 4vw, 48px);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.brand {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.brandIcon {
+  align-items: center;
+  background: #2563eb;
+  border-radius: 8px;
+  color: #fff;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.brandIcon svg {
+  height: 20px;
+  width: 20px;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand small {
+  color: #6b7280;
+}
+
+.nav {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+.cartLink {
+  align-items: center;
+  background: #2563eb;
+  border-radius: 10px;
+  color: #fff;
+  display: inline-flex;
+  font-weight: 700;
+  gap: 8px;
+  padding: 10px 16px;
+}
+
+.cartLink span {
+  background: #fff;
+  border-radius: 999px;
+  color: #2563eb;
+  margin-left: 6px;
+  padding: 2px 7px;
+}
+
+.cartLink svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 680px) {
+  .topbar,
+  .nav {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

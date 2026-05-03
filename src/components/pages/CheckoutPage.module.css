@@ -1,0 +1,45 @@
+.checkoutPage {
+  max-width: 760px;
+}
+
+.checkoutForm {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+}
+
+.checkoutForm label {
+  display: grid;
+  font-weight: 700;
+  gap: 8px;
+}
+
+.checkoutForm input {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 13px 14px;
+}
+
+.totals {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+.totals h2 {
+  margin: 0;
+}
+
+.totals p {
+  color: #111827;
+  font-size: 26px;
+}
+
+.totals button {
+  margin-top: 16px;
+  width: 100%;
+}
