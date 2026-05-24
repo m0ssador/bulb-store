@@ -1,0 +1,65 @@
+.form {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.form label {
+  color: #374151;
+  display: grid;
+  font-weight: 600;
+  gap: 6px;
+}
+
+.form input,
+.form select,
+.form textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  background: #fff;
+  border-collapse: collapse;
+  border-radius: 12px;
+  min-width: 720px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.rowActions {
+  display: flex;
+  gap: 8px;
+}

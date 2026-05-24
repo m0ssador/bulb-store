@@ -26,6 +26,7 @@ export function Layout() {
             <CartIcon />
             Корзина {totalCount > 0 && <span>{totalCount}</span>}
           </NavLink>
+          <NavLink to="/admin/products">Админка</NavLink>
         </nav>
       </header>
 

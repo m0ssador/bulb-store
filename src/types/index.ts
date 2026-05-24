@@ -15,6 +15,22 @@ export type Product = {
   imageUrl?: string;
 };
 
+export type ProductCreate = {
+  name: string;
+  description: string | null;
+  price: number;
+  quantity: number;
+  categoryId: number;
+  socket: string;
+  power: number;
+  colorTemperature: number;
+  brightness: number;
+  shape: string;
+  popularity: number;
+};
+
+export type ProductUpdate = Partial<ProductCreate>;
+
 export type ProductPage = {
   items: Product[];
   page: number;
@@ -47,9 +63,27 @@ export type OrderItem = {
 
 export type Order = {
   id: number;
-  status: string;
+  status: OrderStatus;
   customerEmail: string | null;
   createdAt: string;
   updatedAt: string;
   items: OrderItem[];
+};
+
+export type OrderStatus = "pending" | "confirmed" | "shipped" | "cancelled";
+
+export type LoginRequest = {
+  login: string;
+  password: string;
+};
+
+export type AuthTokenResponse = {
+  accessToken: string;
+  tokenType: string;
+};
+
+export type AuthUser = {
+  id: number;
+  login: string;
+  isActive: boolean;
 };
