@@ -16,16 +16,39 @@ const CATALOG_API = "/api/catalog";
 const ORDERS_API = "/api/orders";
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
+  const { headers: customHeaders, ...restOptions } = options ?? {};
   const response = await fetch(url, {
+    ...restOptions,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...(customHeaders ?? {}),
     },
-    ...options,
   });
 
   if (!response.ok) {
-    throw new Error(`Ошибка запроса: ${response.status}`);
+    let detail = "";
+    try {
+      const data = (await response.json()) as { detail?: unknown };
+      if (typeof data.detail === "string") {
+        detail = data.detail;
+      } else if (Array.isArray(data.detail)) {
+        detail = data.detail
+          .map((item) => {
+            if (item && typeof item === "object" && "msg" in item) {
+              return String(item.msg);
+            }
+            return "";
+          })
+          .filter(Boolean)
+          .join("; ");
+      }
+    } catch {
+      detail = "";
+    }
+
+    throw new Error(
+      detail ? `Ошибка запроса: ${response.status} (${detail})` : `Ошибка запроса: ${response.status}`,
+    );
   }
 
   if (response.status === 204) {

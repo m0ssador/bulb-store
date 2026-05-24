@@ -35,7 +35,23 @@ export function AdminProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
-  const canSave = useMemo(() => Boolean(form.name.trim() && token), [form.name, token]);
+  const canSave = useMemo(
+    () =>
+      Boolean(
+        token &&
+          form.name.trim() &&
+          form.socket.trim() &&
+          form.shape.trim() &&
+          form.categoryId > 0 &&
+          form.price > 0 &&
+          form.power > 0 &&
+          form.colorTemperature > 0 &&
+          form.quantity >= 0 &&
+          form.brightness >= 0 &&
+          form.popularity >= 0,
+      ),
+    [form, token],
+  );
 
   useEffect(() => {
     if (!token) {
@@ -100,6 +116,18 @@ export function AdminProductsPage() {
     }));
   }
 
+  function setNumericField<K extends keyof ProductCreate>(
+    field: K,
+    value: string,
+    fallback: number,
+  ) {
+    const parsed = Number(value);
+    setForm((current) => ({
+      ...current,
+      [field]: Number.isFinite(parsed) ? parsed : fallback,
+    }));
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!token || !canSave) {
@@ -110,23 +138,32 @@ export function AdminProductsPage() {
     setIsSaving(true);
 
     try {
+      if (!canSave) {
+        throw new Error("Проверьте обязательные поля и числовые ограничения.");
+      }
+
+      const payload: ProductCreate = {
+        ...form,
+        name: form.name.trim(),
+        socket: form.socket.trim(),
+        shape: form.shape.trim(),
+        description: form.description?.trim() || null,
+      };
+
       if (editingId === null) {
-        const created = await createProduct(
-          { ...form, description: form.description?.trim() || null },
-          token,
-        );
+        const created = await createProduct(payload, token);
         setProducts((current) => [created, ...current]);
       } else {
-        const updated = await updateProduct(
-          editingId,
-          { ...form, description: form.description?.trim() || null },
-          token,
-        );
+        const updated = await updateProduct(editingId, payload, token);
         setProducts((current) => current.map((it) => (it.id === updated.id ? updated : it)));
       }
       resetForm();
-    } catch {
-      setError("Не удалось сохранить товар. Проверьте токен и корректность полей.");
+    } catch (submitError) {
+      const message =
+        submitError instanceof Error
+          ? submitError.message
+          : "Не удалось сохранить товар. Проверьте токен и корректность полей.";
+      setError(message);
     } finally {
       setIsSaving(false);
     }
@@ -201,9 +238,7 @@ export function AdminProductsPage() {
               required
               type="number"
               value={form.price}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, price: Number(event.target.value) }))
-              }
+              onChange={(event) => setNumericField("price", event.target.value, 1)}
             />
           </label>
           <label>
@@ -213,9 +248,7 @@ export function AdminProductsPage() {
               required
               type="number"
               value={form.quantity}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, quantity: Number(event.target.value) }))
-              }
+              onChange={(event) => setNumericField("quantity", event.target.value, 0)}
             />
           </label>
           <label>
@@ -235,9 +268,7 @@ export function AdminProductsPage() {
               required
               type="number"
               value={form.power}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, power: Number(event.target.value) }))
-              }
+              onChange={(event) => setNumericField("power", event.target.value, 1)}
             />
           </label>
           <label>
@@ -248,10 +279,7 @@ export function AdminProductsPage() {
               type="number"
               value={form.colorTemperature}
               onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  colorTemperature: Number(event.target.value),
-                }))
+                setNumericField("colorTemperature", event.target.value, 1000)
               }
             />
           </label>
@@ -262,9 +290,7 @@ export function AdminProductsPage() {
               required
               type="number"
               value={form.brightness}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, brightness: Number(event.target.value) }))
-              }
+              onChange={(event) => setNumericField("brightness", event.target.value, 0)}
             />
           </label>
           <label>
@@ -282,9 +308,7 @@ export function AdminProductsPage() {
               required
               type="number"
               value={form.popularity}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, popularity: Number(event.target.value) }))
-              }
+              onChange={(event) => setNumericField("popularity", event.target.value, 0)}
             />
           </label>
         </div>
